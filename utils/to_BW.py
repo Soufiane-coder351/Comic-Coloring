@@ -8,7 +8,7 @@ file.write("Image_path,BW_Image_path\n")
 
 
 def add_paths_image(path, file):
-    ''' add paths to dataset.csv and create the bw image '''
+    """add paths to dataset.csv and create the bw image"""
     for vol in os.listdir(path):
         # create the BW folders
         bw_path = os.path.join(path, vol, "BW")
@@ -27,6 +27,6 @@ def create_BW_image(path_color, path_bw):
     image = cv2.imread(path_color)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cv2.imwrite(path_bw, gray_image)
-
+    print(gray_image.shape)
 
 add_paths_image(path, file)
