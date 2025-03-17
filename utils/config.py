@@ -36,6 +36,7 @@ def load_checkpoint(filename, model, optimizer, learning_rate, device='cpu'):
     for param_group in optimizer.param_groups:
         param_group['lr'] = learning_rate
 
+
 # Function to save some example outputs from the generator
 def save_some_examples(generator, data_loader, epoch, folder="examples"):
     print(f"Saving example images at epoch {epoch}...")
@@ -45,15 +46,18 @@ def save_some_examples(generator, data_loader, epoch, folder="examples"):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Get a batch from the loader and pass it through the generator
-    for idx, (x, _) in enumerate(data_loader):
-        x = x.to(device)
+    for idx, (x, y) in enumerate(data_loader):
+        x, y = x.to(device), y.to(device)
+        
         fake_images = generator(x)
 
-        # Save the fake images
-        save_image(fake_images, f"{folder}/fake_image_{epoch}_{idx}.png", normalize=True)
+        # Save the input (BW), target (colored), and fake images
+        save_image(x, f"{folder}/bw_image_{epoch}_{idx}.png", normalize=True)  # Black & White input
+        save_image(y, f"{folder}/target_image_{epoch}_{idx}.png", normalize=True)  # Target colored image
+        save_image(fake_images, f"{folder}/fake_image_{epoch}_{idx}.png", normalize=True)  # Generated image
         
         # Save only a few examples (change `break` to save more)
         if idx == 20:
             break
 
-    generator.train()  # Set the model back to training mode
+    generator.train()  # Set the model back to training mode 
