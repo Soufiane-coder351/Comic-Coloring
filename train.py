@@ -7,6 +7,7 @@ from discriminator_model import Discriminator
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from utils.config import save_checkpoint, load_checkpoint, save_some_examples, CHECKPOINT_GEN, CHECKPOINT_DISC, LEARNING_RATE, EPOCHS
+import os
 
 # Select device (CPU or CUDA)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -48,10 +49,11 @@ def main():
     BCE = nn.BCEWithLogitsLoss()
     L1_Loss = nn.L1Loss()
 
-    # Load checkpoints if needed
-    # if config.LOAD_MODEL:
-    #     load_checkpoint(CHECKPOINT_GEN, gen, opt_gen, LEARNING_RATE, device=device)
-    #     load_checkpoint(CHECKPOINT_DISC, disc, opt_disc, LEARNING_RATE, device=device)
+    # Load checkpoints if they exist
+    if os.path.exists(CHECKPOINT_GEN):
+        load_checkpoint(CHECKPOINT_GEN, gen, opt_gen, LEARNING_RATE, device=device)
+    if os.path.exists(CHECKPOINT_DISC):
+        load_checkpoint(CHECKPOINT_DISC, disc, opt_disc, LEARNING_RATE, device=device)
 
     train_dataset = DatasetLoader(img_dir="./Dataset", img_size=(256, 256))
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=2)
@@ -64,7 +66,7 @@ def main():
             save_checkpoint(gen, opt_gen, CHECKPOINT_GEN)
             save_checkpoint(disc, opt_disc, CHECKPOINT_DISC)
 
-        save_some_examples(gen, train_loader, epoch, folder="examples")
+    save_some_examples(gen, train_loader, epoch, folder="examples")
 
 if __name__ == "__main__":
     main()
