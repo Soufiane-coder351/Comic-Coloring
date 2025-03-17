@@ -11,8 +11,6 @@ IMG_SIZE = (512, 512)
 CHECKPOINT_GEN = './checkpoints/gen_checkpoint.pth'
 CHECKPOINT_DISC = './checkpoints/disc_checkpoint.pth'
 
-# Select device (CPU or CUDA)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 # Ensure checkpoint directories exist
@@ -43,6 +41,8 @@ def save_some_examples(generator, data_loader, epoch, folder="examples"):
     print(f"Saving example images at epoch {epoch}...")
     generator.eval()
     os.makedirs(folder, exist_ok=True)
+    # Select device (CPU or CUDA)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Get a batch from the loader and pass it through the generator
     for idx, (x, _) in enumerate(data_loader):
