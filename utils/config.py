@@ -53,7 +53,7 @@ def save_some_examples(generator, data_loader, epoch, folder="examples"):
         save_image(fake_images, f"{folder}/fake_image_{epoch}_{idx}.png", normalize=True)
         
         # Save only a few examples (change `break` to save more)
-        if idx == 5:
+        if idx == 20:
             break
 
     generator.train()  # Set the model back to training mode
