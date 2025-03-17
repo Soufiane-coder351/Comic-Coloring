@@ -54,7 +54,7 @@ def main():
     #     load_checkpoint(CHECKPOINT_DISC, disc, opt_disc, LEARNING_RATE, device=device)
 
     train_dataset = DatasetLoader(img_dir="./Dataset", img_size=(256, 256))
-    train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=4)
+    train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=2)
 
     for epoch in range(EPOCHS):
         train_fn(disc, gen, train_loader, opt_disc, opt_gen, BCE, L1_Loss)
