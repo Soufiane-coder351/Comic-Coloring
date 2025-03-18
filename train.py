@@ -49,22 +49,21 @@ def main():
     BCE = nn.BCEWithLogitsLoss()
     L1_Loss = nn.L1Loss()
 
-    # Load checkpoints if they exist
-    # if os.path.exists(CHECKPOINT_GEN):
-    #     load_checkpoint(CHECKPOINT_GEN, gen, opt_gen, LEARNING_RATE, device=device)
-    # if os.path.exists(CHECKPOINT_DISC):
-    #     load_checkpoint(CHECKPOINT_DISC, disc, opt_disc, LEARNING_RATE, device=device)
+    #Load checkpoints if they exist
+    if os.path.exists(CHECKPOINT_GEN):
+        load_checkpoint(CHECKPOINT_GEN, gen, opt_gen, LEARNING_RATE, device=device)
+    if os.path.exists(CHECKPOINT_DISC):
+        load_checkpoint(CHECKPOINT_DISC, disc, opt_disc, LEARNING_RATE, device=device)
 
-    train_dataset = DatasetLoader(img_dir="./Dataset", img_size=(256, 256))
+    train_dataset = DatasetLoader(img_dir="./Dataset", img_size=(512, 512))
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=2)
 
     for epoch in range(EPOCHS):
         train_fn(disc, gen, train_loader, opt_disc, opt_gen, BCE, L1_Loss)
 
-        # Save the model and examples periodically
-        # if epoch % 5 == 0:
-        #     save_checkpoint(gen, opt_gen, CHECKPOINT_GEN)
-        #     save_checkpoint(disc, opt_disc, CHECKPOINT_DISC)
+    # Save the model and examples     
+    save_checkpoint(gen, opt_gen, CHECKPOINT_GEN)
+    save_checkpoint(disc, opt_disc, CHECKPOINT_DISC)
 
     save_some_examples(gen, train_loader, epoch, folder="examples")
 
