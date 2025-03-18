@@ -26,15 +26,15 @@ def save_checkpoint(model, optimizer, filename):
     }, filename)
 
 # Function to load the model checkpoint
-def load_checkpoint(filename, model, optimizer, learning_rate, device='cpu'):
+def load_checkpoint(filename, model, optimizer=None, lr=0, device="cpu"):
     print(f"Loading checkpoint from {filename}...")
-    checkpoint = torch.load(filename, map_location=device)
-    model.load_state_dict(checkpoint['state_dict'])
-    optimizer.load_state_dict(checkpoint['optimizer'])
+    checkpoint = torch.load(filename, map_location=device, weights_only=True)
+    model.load_state_dict(checkpoint["state_dict"])
 
-    # Optionally adjust the learning rate after loading
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = learning_rate
+    if optimizer is not None:  # Vérifier si l'optimizer est fourni
+        optimizer.load_state_dict(checkpoint["optimizer"])
+        for param_group in optimizer.param_groups:
+            param_group["lr"] = lr
 
 
 # Function to save some example outputs from the generator
