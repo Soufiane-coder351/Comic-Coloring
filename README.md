@@ -16,4 +16,7 @@ The model is trained using the [Kaggle Comic Dataset](https://www.kaggle.com/dat
     git clone https://github.com/Soufiane-coder351/Comic-Coloring.git
     cd Comic-Coloring
     ```
-
+2. Run the training script to start training the model:
+    ```bash
+    python3 train.py 
+    ```
